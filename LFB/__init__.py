@@ -80,7 +80,10 @@ def main():
 				if botMet:
 					if c.subreddit.display_name not in bannedSubs:
 						print("\tFound valid comment at comment id '" + c.id + "'! Fixing broken link...")
-						postComment(c, text)
+						try:
+							postComment(c, text)
+						except:
+							print("\tCould not post comment! Check reddit.com for errors.")
 					else:
 						print("\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'! Skipping...")
 			print("\tFinished checking comments! Sleeping for 30 seconds...")
