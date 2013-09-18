@@ -26,6 +26,9 @@ cache = []
 rFind = re.compile(' r/[A-Za-z0-9]+')
 uFind = re.compile(' u/[A-Za-z0-9]+')
 
+bannedSubs = set()
+bannedSubs.add('loans')
+
 def handleRateLimit(func, *args):
 	while True:
 		try:
@@ -75,8 +78,11 @@ def main():
 			for c in comments:
 				botMet, text = checkComment(c)
 				if botMet:
-					print("\tFound valid comment at comment id '" + c.id + "'! Fixing broken link...")
-					postComment(c, text)
+					if comment.subreddit.display_name not in bannedSubs:
+						print("\tFound valid comment at comment id '" + c.id + "'! Fixing broken link...")
+						postComment(c, text)
+					else:
+						print("\tThe comment found is in the banned subreddit '" + comment.subreddit.display_name + "'! Skipping...")
 			print("\tFinished checking comments! Sleeping for 30 seconds...")
 			time.sleep(30)
 	except KeyboardInterrupt:
