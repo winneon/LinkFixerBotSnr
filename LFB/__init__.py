@@ -78,11 +78,11 @@ def main():
 			for c in comments:
 				botMet, text = checkComment(c)
 				if botMet:
-					if comment.subreddit.display_name not in bannedSubs:
+					if c.subreddit.display_name not in bannedSubs:
 						print("\tFound valid comment at comment id '" + c.id + "'! Fixing broken link...")
 						postComment(c, text)
 					else:
-						print("\tThe comment found is in the banned subreddit '" + comment.subreddit.display_name + "'! Skipping...")
+						print("\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'! Skipping...")
 			print("\tFinished checking comments! Sleeping for 30 seconds...")
 			time.sleep(30)
 	except KeyboardInterrupt:
