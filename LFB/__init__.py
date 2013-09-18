@@ -18,7 +18,7 @@ version = "v1.0"
 
 userAgent = (
 			"/u/WinneonSword's very own /u/LinkFixerBotSnr," + version +
-			"For more info: http://github.com/WinneonSword/LinkFixerBotSnr ( Coming soon! )"
+			"For more info: http://github.com/WinneonSword/LinkFixerBotSnr"
 )
 
 cache = []
