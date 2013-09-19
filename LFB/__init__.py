@@ -27,7 +27,10 @@ rFind = re.compile(' r/[A-Za-z0-9]+')
 uFind = re.compile(' u/[A-Za-z0-9]+')
 
 bannedSubs = set()
-bannedSubs.add('loans')
+bannedSubs.add('Loans')
+bannedSubs.add('nba')
+bannedSubs.add('aww')
+bannedSubs.add('SubredditDrama')
 
 def handleRateLimit(func, *args):
 	while True:
@@ -52,10 +55,13 @@ def postComment(comment, text):
 	message = ''
 	for char in text:
 		message += "/" + char[1:] + "\n"
+		if message.endswith(comment.subreddit.display_name):
+			print("\tThe broken link is the same as the subreddit! Skipping...")
+			return
 	reply = (
 				"" + message + "\n\n"
 				"*****" + "\n\n"
-				"^This ^bot ^is ^a ^fill-in ^for ^/u/LinkFixerBot2 ^until ^it ^gets ^back ^up ^and ^running. ^If ^you ^have ^any ^problems, ^then ^feel ^free ^to ^contact ^/u/WinneonSword."
+				"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
 	print("\tComment posted! Fixed link: " + message)
