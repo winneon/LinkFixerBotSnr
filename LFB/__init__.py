@@ -31,6 +31,15 @@ bannedSubs.add('Loans')
 bannedSubs.add('nba')
 bannedSubs.add('aww')
 bannedSubs.add('SubredditDrama')
+bannedSubs.add('againstmensrights')
+bannedSubs.add('australia')
+bannedSubs.add('ShitPoliticsSays')
+bannedSubs.add('Scotch')
+bannedSubs.add('metacananda')
+bannedSubs.add('news')
+bannedSubs.add('nfl')
+bannedSubs.add('breakingbad')
+bannedSubs.add('TheRedPill')
 
 def handleRateLimit(func, *args):
 	while True:
