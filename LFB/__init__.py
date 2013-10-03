@@ -92,7 +92,7 @@ def main():
 	try:
 		while True:
 			print("[ wsLFB ] - Fetching new comments...")
-			comments = r.get_comments('all', limit = 500)
+			comments = r.get_all_comments(limit = 500)
 			for c in comments:
 				botMet, text = checkComment(c)
 				if botMet:
