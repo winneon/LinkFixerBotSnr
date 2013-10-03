@@ -1,3 +1,6 @@
+#######################################
+# LinkFixerBotSnr, by /u/WinneonSword #
+#######################################
 import praw, time, sys, os, json, argparse
 
 defaultConfig = {
