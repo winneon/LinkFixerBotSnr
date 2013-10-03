@@ -71,7 +71,7 @@ def postComment(comment, text):
 	print("\tFound valid comment at comment id '" + comment.id + "'! Fixing broken link...")
 	message = ''
 	for char in text:
-		message += "/" + char[1:] + "\n"
+		message += "/" + char[1:]
 		if message.endswith(comment.subreddit.display_name):
 			print("\tThe broken link is the same as the subreddit! Skipping...")
 			return
