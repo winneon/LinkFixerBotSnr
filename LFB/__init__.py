@@ -44,6 +44,11 @@ bannedSubs.add('whatisthisthing')
 bannedSubs.add('conspiratard')
 bannedSubs.add('comics')
 
+prohibitedSubs = set()
+prohibitedSubs.add('gonewild')
+prohibitedSubs.add('GoneWildPlus')
+prohibitedSubs.add('NSFW')
+
 def handleRateLimit(func, *args):
 	while True:
 		try:
@@ -70,10 +75,13 @@ def postComment(comment, text):
 		if message.endswith(comment.subreddit.display_name):
 			print("\tThe broken link is the same as the subreddit! Skipping...")
 			return
+		if (any(message.endswith(x) for x in prohibitedSubs)):
+			print("\tThe broken link is a prohibited subreddit! Skipping...")
+			return
 	reply = (
-				"" + message + "\n\n"
-				"*****" + "\n\n"
-				"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
+			"" + message + "\n\n"
+			"*****" + "\n\n"
+			"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
 	print("\tComment posted! Fixed link: " + message)
