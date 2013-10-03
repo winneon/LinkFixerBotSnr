@@ -7,23 +7,29 @@ from warnings import filterwarnings
 filterwarnings("ignore", category = DeprecationWarning)
 filterwarnings("ignore", category = ResourceWarning)
 
+# Loads the config.json file when called. #
 def loadConfig():
 	config = json.loads(open('config.json').read())
 	return config
 
+# Loads the config with the loadConfig() function, and then defines the bot version. #
 config = loadConfig()
-version = "v1.0"
+version = "v1.1"
 
+# The user agent that is sent to Reddit when fetching information. #
 userAgent = (
-			"/u/WinneonSword's very own /u/LinkFixerBotSnr," + version +
-			"For more info: http://github.com/WinneonSword/LinkFixerBotSnr"
+	"/u/WinneonSword's very own /u/LinkFixerBotSnr," + version +
+	"For more info: http://github.com/WinneonSword/LinkFixerBotSnr"
 )
 
+# The cache of comments so the bot won't reply to the same comment. #
 cache = []
 
+# The regex code to search for broken Reddit links. #
 rFind = re.compile(' r/[A-Za-z0-9]+')
 uFind = re.compile(' u/[A-Za-z0-9]+')
 
+# This is a list of subreddits not allowed to be posted on, for various reasons. #
 bannedSubs = set()
 bannedSubs.add('Loans')
 bannedSubs.add('nba')
@@ -42,11 +48,13 @@ bannedSubs.add('whatisthisthing')
 bannedSubs.add('conspiratard')
 bannedSubs.add('comics')
 
+# This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
 prohibitedSubs.add('gonewild')
 prohibitedSubs.add('GoneWildPlus')
 prohibitedSubs.add('NSFW')
 
+# This checks to see if the rate limit for PRAW and Reddit are in check when called. #
 def handleRateLimit(func, *args):
 	while True:
 		try:
@@ -56,6 +64,7 @@ def handleRateLimit(func, *args):
 			print("\tRate Limit exceeded! Sleeping for %d seconds to comply with the Reddit API..." % error.sleep_time)
 			time.sleep(error.sleep_time)
 
+# This function checks a comment for any broken links when called. #
 def checkComment(comment):
 	text = comment.body
 	broken = set(re.findall(rFind, text))
@@ -65,6 +74,7 @@ def checkComment(comment):
 		condition = True
 	return condition, broken
 
+# This function checks and posts a comment that has been identified with a broken link. #
 def postComment(comment, text):
 	print("\tFound valid comment at comment id '" + comment.id + "'! Fixing broken link...")
 	message = ''
@@ -84,6 +94,7 @@ def postComment(comment, text):
 	handleRateLimit(comment.reply, reply)
 	print("\tComment posted! Fixed link: " + message)
 
+# This is the main function that searches for comments every 30 seconds. #
 def main():
 	username = config['reddit']['username']
 	password = config['reddit']['password']
