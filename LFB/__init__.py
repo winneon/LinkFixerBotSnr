@@ -1,8 +1,6 @@
-#--------------------#
-#   LinkFixerBotSnr  #
-# By /u/WinneonSword #
-#--------------------#
-
+#######################################
+# LinkFixerBotSnr, by /u/WinneonSword #
+#######################################
 import praw, time, sys, os, json, re, getpass
 from warnings import filterwarnings
 
