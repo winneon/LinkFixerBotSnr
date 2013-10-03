@@ -1,4 +1,4 @@
-import praw, time, sys, os, json
+import praw, time, sys, os, json, argparse
 
 defaultConfig = {
 	'reddit': {

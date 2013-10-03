@@ -3,7 +3,7 @@
 # By /u/WinneonSword #
 #--------------------#
 
-import praw, time, sys, os, json, re
+import praw, time, sys, os, json, re, getpass
 from warnings import filterwarnings
 
 filterwarnings("ignore", category = DeprecationWarning)
@@ -40,6 +40,9 @@ bannedSubs.add('news')
 bannedSubs.add('nfl')
 bannedSubs.add('breakingbad')
 bannedSubs.add('TheRedPill')
+bannedSubs.add('whatisthisthing')
+bannedSubs.add('conspiratard')
+bannedSubs.add('comics')
 
 def handleRateLimit(func, *args):
 	while True:
@@ -105,10 +108,3 @@ def main():
 			time.sleep(30)
 	except KeyboardInterrupt:
 		print("[ wsLFB ] - Stopped LinkFixerBotSnr!")
-	except HTTPError:
-		errorTimouts = errorTimeouts + 1
-		if errorTimouts == 3:
-			print("[ wsLFB ] - You have encountered 3 timeouts! Stopping the bot to reduce load on reddit...")
-			sys.exit()
-		print("[ wsLFB ] - Encountered a HTTP error! Restarting the bot...")
-		main()
