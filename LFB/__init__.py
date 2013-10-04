@@ -64,6 +64,12 @@ def handleRateLimit(func, *args):
 			print("\tRate Limit exceeded! Sleeping for %d seconds to comply with the Reddit API..." % error.sleep_time)
 			time.sleep(error.sleep_time)
 
+# This prevents anything going into it to be doubled accidentally. #
+def preventDoubles(func, *args):
+	while True:
+		func(*args)
+		break
+
 # This function checks a comment for any broken links when called. #
 def checkComment(comment):
 	text = comment.body
@@ -79,7 +85,7 @@ def postComment(comment, text):
 	print("\tFound valid comment at comment id '" + comment.id + "'! Fixing broken link...")
 	message = ''
 	for char in text:
-		message += "/" + char[1:]
+		message += " /" + char[1:]
 		if message.endswith(comment.subreddit.display_name):
 			print("\tThe broken link is the same as the subreddit! Skipping...")
 			return
@@ -87,15 +93,15 @@ def postComment(comment, text):
 			print("\tThe broken link is a prohibited subreddit! Skipping...")
 			return
 	reply = (
-			"" + message + "\n\n"
-			"*****" + "\n\n"
-			"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
+		"" + message + "\n\n"
+		"*****" + "\n\n"
+		"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
 	print("\tComment posted! Fixed link: " + message)
 
 # This is the main function that searches for comments every 30 seconds. #
-def main():
+def main():	
 	username = config['reddit']['username']
 	password = config['reddit']['password']
 	print("[ wsLFB ] - Attempting to connect & login to Reddit...")
@@ -114,7 +120,10 @@ def main():
 				botMet, text = checkComment(c)
 				if botMet:
 					if c.subreddit.display_name not in bannedSubs:
-						print("\tFound valid comment at comment id '" + c.id + "'! Fixing broken link...")
+						validComment = (
+							"\tFound valid comment at comment id '" + c.id + "'! Fixing broken link..."
+						)
+						preventDoubles(print, validComment)
 						try:
 							postComment(c, text)
 						except:
