@@ -54,6 +54,7 @@ prohibitedSubs = set()
 prohibitedSubs.add('gonewild')
 prohibitedSubs.add('gonewildplus')
 prohibitedSubs.add('nsfw')
+prohibitedSubs.add('spacedicks')
 
 # This checks to see if the rate limit for PRAW and Reddit are in check when called. #
 def handleRateLimit(func, *args):
