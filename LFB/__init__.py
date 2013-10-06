@@ -23,7 +23,7 @@ userAgent = (
 )
 
 # The cache of comments so the bot won't reply to the same comment. #
-cache = []
+cache = set()
 
 # The regex code to search for broken Reddit links. #
 rFind = re.compile(' r/[A-Za-z0-9]+')
@@ -98,7 +98,7 @@ def postComment(comment, text):
 		"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
-	cache.append(comment.id)
+	cache.add(comment.id)
 	print("\tComment posted! Fixed link: " + message)
 
 # This is the main function that searches for comments every 30 seconds. #
@@ -121,14 +121,17 @@ def main():
 				botMet, text = checkComment(c)
 				if botMet:
 					if c.subreddit.display_name.lower() not in bannedSubs:
-						validComment = (
-							"\tFound valid comment at comment id '" + c.id + "'! Fixing broken link..."
-						)
-						preventDoubles(print, validComment)
-						try:
-							postComment(c, text)
-						except:
-							print("\tCould not post comment! Check reddit.com for errors.")
+						if c.id not in cache:
+							validComment = (
+								"\tFound valid comment at comment id '" + c.id + "'! Fixing broken link..."
+							)
+							preventDoubles(print, validComment)
+							try:
+								postComment(c, text)
+							except:
+								print("\tCould not post comment! Check reddit.com for errors.")
+						else:
+							print("\tThe broken link has already been fixed! Skipping...")
 					else:
 						print("\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'! Skipping...")
 			print("\tFinished checking comments! Sleeping for 30 seconds...")
