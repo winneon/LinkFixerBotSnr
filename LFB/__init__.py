@@ -98,6 +98,7 @@ def postComment(comment, text):
 		"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
+	cache.append(comment.id)
 	print("\tComment posted! Fixed link: " + message)
 
 # This is the main function that searches for comments every 30 seconds. #
