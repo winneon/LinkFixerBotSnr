@@ -31,19 +31,19 @@ uFind = re.compile(' u/[A-Za-z0-9]+')
 
 # This is a list of subreddits not allowed to be posted on, for various reasons. #
 bannedSubs = set()
-bannedSubs.add('Loans')
+bannedSubs.add('loans')
 bannedSubs.add('nba')
 bannedSubs.add('aww')
-bannedSubs.add('SubredditDrama')
+bannedSubs.add('subredditdrama')
 bannedSubs.add('againstmensrights')
 bannedSubs.add('australia')
-bannedSubs.add('ShitPoliticsSays')
-bannedSubs.add('Scotch')
+bannedSubs.add('shitpoliticssays')
+bannedSubs.add('scotch')
 bannedSubs.add('metacananda')
 bannedSubs.add('news')
 bannedSubs.add('nfl')
 bannedSubs.add('breakingbad')
-bannedSubs.add('TheRedPill')
+bannedSubs.add('theredpill')
 bannedSubs.add('whatisthisthing')
 bannedSubs.add('conspiratard')
 bannedSubs.add('comics')
@@ -51,8 +51,8 @@ bannedSubs.add('comics')
 # This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
 prohibitedSubs.add('gonewild')
-prohibitedSubs.add('GoneWildPlus')
-prohibitedSubs.add('NSFW')
+prohibitedSubs.add('gonewildplus')
+prohibitedSubs.add('nsfw')
 
 # This checks to see if the rate limit for PRAW and Reddit are in check when called. #
 def handleRateLimit(func, *args):
@@ -86,10 +86,10 @@ def postComment(comment, text):
 	message = ''
 	for char in text:
 		message += " /" + char[1:]
-		if message.endswith(comment.subreddit.display_name):
+		if message.endswith(comment.subreddit.display_name.lower()):
 			print("\tThe broken link is the same as the subreddit! Skipping...")
 			return
-		if (any(message.endswith(x) for x in prohibitedSubs)):
+		if (any(message.endswith(x) for x.lower() in prohibitedSubs)):
 			print("\tThe broken link is a prohibited subreddit! Skipping...")
 			return
 	reply = (
@@ -119,7 +119,7 @@ def main():
 			for c in comments:
 				botMet, text = checkComment(c)
 				if botMet:
-					if c.subreddit.display_name not in bannedSubs:
+					if c.subreddit.display_name.lower() not in bannedSubs:
 						validComment = (
 							"\tFound valid comment at comment id '" + c.id + "'! Fixing broken link..."
 						)
