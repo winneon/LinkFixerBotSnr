@@ -86,10 +86,10 @@ def postComment(comment, text):
 	message = ''
 	for char in text:
 		message += "/" + char[1:] + " "
-		if message.endswith(comment.subreddit.display_name.lower() + " "):
+		if message.endswith(comment.subreddit.display_name.lower()):
 			print("\tThe broken link is the same as the subreddit! Skipping...")
 			return
-		if (any(message.endswith(x.lower() + " ") for x in prohibitedSubs)):
+		if (any(message.endswith(x.lower()) for x in prohibitedSubs)):
 			print("\tThe broken link is a prohibited subreddit! Skipping...")
 			return
 	reply = (
