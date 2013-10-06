@@ -47,6 +47,7 @@ bannedSubs.add('theredpill')
 bannedSubs.add('whatisthisthing')
 bannedSubs.add('conspiratard')
 bannedSubs.add('comics')
+bannedSubs.add('mls')
 
 # This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
