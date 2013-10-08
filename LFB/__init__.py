@@ -53,6 +53,7 @@ bannedSubs.add('politics')
 bannedSubs.add('badhistory')
 bannedSubs.add('49ers')
 bannedSubs.add('yugioh')
+bannedSubs.add('mac')
 
 # This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
@@ -113,13 +114,13 @@ def postComment(comment, text):
 def main():	
 	username = config['reddit']['username']
 	password = config['reddit']['password']
-	print("[ wsLFB ] - Attempting to connect & login to Reddit...")
+	print("[ wsLFB ] - Attempting to connect & login to reddit...")
 	try:
 		r = praw.Reddit(user_agent = userAgent)
 		r.login(username, password)
-		print("\tSuccessfully connected & logged in to Reddit!")
+		print("\tSuccessfully connected & logged in to reddit!")
 	except:
-		print("\tCould not connect to Reddit. Check reddit.com or your config for errors.")
+		print("\tCould not connect to reddit. Check reddit.com or your config for errors.")
 		sys.exit()
 	try:
 		while True:
