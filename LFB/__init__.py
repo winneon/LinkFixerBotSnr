@@ -51,6 +51,8 @@ bannedSubs.add('mls')
 bannedSubs.add('twoxchromosomes')
 bannedSubs.add('politics')
 bannedSubs.add('badhistory')
+bannedSubs.add('49ers')
+bannedSubs.add('yugioh')
 
 # This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
