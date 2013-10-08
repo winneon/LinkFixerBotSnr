@@ -26,8 +26,8 @@ userAgent = (
 cache = set()
 
 # The regex code to search for broken Reddit links. #
-rFind = re.compile(' r/[A-Za-z0-9]+')
-uFind = re.compile(' u/[A-Za-z0-9]+')
+rFind = re.compile(' r/[A-Za-z0-9_]+')
+uFind = re.compile(' u/[A-Za-z0-9_]+')
 
 # This is a list of subreddits not allowed to be posted on, for various reasons. #
 bannedSubs = set()
