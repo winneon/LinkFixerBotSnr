@@ -68,6 +68,7 @@ prohibitedSubs.add('nsfw')
 prohibitedSubs.add('spacedicks')
 prohibitedSubs.add('porn')
 prohibitedSubs.add('atheism')
+prohibitedSubs.add('cock')
 
 # This checks to see if the rate limit for PRAW and Reddit are in check when called. #
 def handleRateLimit(func, *args):
