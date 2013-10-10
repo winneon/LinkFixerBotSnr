@@ -14,11 +14,11 @@ def loadConfig():
 
 # Loads the config with the loadConfig() function, and then defines the bot version. #
 config = loadConfig()
-version = "v1.1"
+version = "v1.2"
 
 # The user agent that is sent to Reddit when fetching information. #
 userAgent = (
-	"/u/WinneonSword's very own /u/LinkFixerBotSnr," + version +
+	"/u/WinneonSword's very own /u/LinkFixerBotSnr, " + version + "\n"
 	"For more info: http://github.com/WinneonSword/LinkFixerBotSnr"
 )
 
@@ -70,14 +70,11 @@ def handleRateLimit(func, *args):
 			func(*args)
 			break
 		except praw.errors.RateLimitExceeded as error:
-			print("\tRate Limit exceeded! Sleeping for %d seconds to comply with the Reddit API..." % error.sleep_time)
+			print(
+				"\tRate Limit exceeded!" + "\n"
+				"\tSleeping for %d seconds to comply with the Reddit API..." % error.sleep_time
+				)
 			time.sleep(error.sleep_time)
-
-# This prevents anything going into it to be doubled accidentally. #
-def preventDoubles(func, *args):
-	while True:
-		func(*args)
-		break
 
 # This function checks a comment for any broken links when called. #
 def checkComment(comment):
@@ -91,15 +88,20 @@ def checkComment(comment):
 
 # This function checks and posts a comment that has been identified with a broken link. #
 def postComment(comment, text):
-	print("\tFound valid comment at comment id '" + comment.id + "'! Fixing broken link...")
 	message = ''
 	for char in text:
 		message += "/" + char[1:] + " "
 		if message.endswith(comment.subreddit.display_name.lower() + " "):
-			print("\tThe broken link is the same as the subreddit! Skipping...")
+			print(
+				"\t\tThe broken link is the same as the subreddit!" + "\n"
+				"\t\tSkipping..." + "\n"
+				)
 			return
 		if (any(message.endswith(x.lower() + " ") for x in prohibitedSubs)):
-			print("\tThe broken link is a prohibited subreddit! Skipping...")
+			print(
+				"\t\tThe broken link is a prohibited subreddit!" + "\n"
+				"\t\tSkipping..." + "\n"
+				)
 			return
 	reply = (
 		"" + message + "\n\n"
@@ -108,7 +110,10 @@ def postComment(comment, text):
 	)
 	handleRateLimit(comment.reply, reply)
 	cache.add(comment.id)
-	print("\tComment posted! Fixed link: " + message)
+	print(
+		"\tComment posted in the subreddit '" + comment.subreddit.display_name + "'! Fixed link(s):" + 	"\n"
+		"\t\t" + message + "\n"
+		)
 
 # This is the main function that searches for comments every 30 seconds. #
 def main():	
@@ -118,9 +123,9 @@ def main():
 	try:
 		r = praw.Reddit(user_agent = userAgent)
 		r.login(username, password)
-		print("\tSuccessfully connected & logged in to Reddit!")
+		print("\tSuccessfully connected & logged in to Reddit!" + "\n")
 	except:
-		print("\tCould not connect to Reddit. Check reddit.com or your config for errors.")
+		print("\tCould not connect to Reddit. Check reddit.com or your config for errors." + "\n")
 		sys.exit()
 	try:
 		while True:
@@ -132,9 +137,10 @@ def main():
 					if c.subreddit.display_name.lower() not in bannedSubs:
 						if c.id not in cache:
 							validComment = (
-								"\tFound valid comment at comment id '" + c.id + "'! Fixing broken link..."
+								"\tFound valid comment in the subreddit '" + c.subreddit.display_name + "'!" + "\n"
+								"\tFixing broken link..."
 							)
-							preventDoubles(print, validComment)
+							print(validComment)
 							try:
 								postComment(c, text)
 							except:
@@ -142,8 +148,11 @@ def main():
 						else:
 							print("\tThe broken link has already been fixed! Skipping...")
 					else:
-						print("\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'! Skipping...")
-			print("\tFinished checking comments! Sleeping for 30 seconds...")
+						print(
+							"\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'!" + "\n"
+							"\tSkipping..." + "\n"
+							)
+			print("\tFinished checking comments! Sleeping for 30 seconds..." + "\n")
 			time.sleep(30)
 	except KeyboardInterrupt:
 		print("[ wsLFB ] - Stopped LinkFixerBotSnr!")
