@@ -132,7 +132,7 @@ def main():
 		r.login(username, password)
 		print("\tSuccessfully connected & logged in to Reddit!" + "\n")
 	except:
-		print("\tCould not connect to Reddit. Check reddit.com or your config for errors." + "\n")
+		print("\tCould not connect to Reddit. Check reddit.com or your config for errors.")
 		sys.exit()
 	try:
 		while True:
