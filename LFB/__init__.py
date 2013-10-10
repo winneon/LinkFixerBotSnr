@@ -54,6 +54,11 @@ bannedSubs.add('badhistory')
 bannedSubs.add('49ers')
 bannedSubs.add('yugioh')
 bannedSubs.add('mac')
+bannedSubs.add('science')
+bannedSubs.add('politicaldiscussion')
+bannedSubs.add('photography')
+bannedSubs.add('srsgaming')
+bannedSubs.add('europe')
 
 # This is a list of subreddits not allowed to be linked to, for more various reasons. #
 prohibitedSubs = set()
@@ -61,7 +66,9 @@ prohibitedSubs.add('gonewild')
 prohibitedSubs.add('gonewildplus')
 prohibitedSubs.add('nsfw')
 prohibitedSubs.add('spacedicks')
-prohibitedSubs.add('frugal')
+prohibitedSubs.add('porn')
+prohibitedSubs.add('atheism')
+prohibitedSubs.add('cock')
 
 # This checks to see if the rate limit for PRAW and Reddit are in check when called. #
 def handleRateLimit(func, *args):
