@@ -18,9 +18,10 @@ version = "v1.2"
 
 # The user agent that is sent to Reddit when fetching information. #
 userAgent = (
-	"/u/WinneonSword's very own /u/LinkFixerBotSnr, " + version + "\n"
+	"/u/WinneonSword's very own /u/LinkFixerBotSnr, " + version + 
 	"For more info: http://github.com/WinneonSword/LinkFixerBotSnr"
 )
+r = praw.Reddit(user_agent = userAgent)
 
 # The cache of comments so the bot won't reply to the same comment. #
 cache = set()
@@ -110,9 +111,18 @@ def postComment(comment, text):
 				"\t\tSkipping..." + "\n"
 				)
 			return
+		try:
+			sub = char.replace(' r/', '')
+			r.get_subreddit(sub, fetch = True)
+		except:
+			print(
+				"\t\tThe broken link is not a valid subreddit!" + "\n"
+				"\t\tSkipping..." + "\n"
+				)
+			return
 	reply = (
 		"" + message + "\n\n"
-		"*****" + "\n\n"
+		"*****" + "\n"
 		"^This ^is ^an [^automated ^bot](http://github.com/WinneonSword/LinkFixerBotSnr)^. ^For ^reporting ^problems, ^contact ^/u/WinneonSword."
 	)
 	handleRateLimit(comment.reply, reply)
@@ -128,7 +138,6 @@ def main():
 	password = config['reddit']['password']
 	print("[ wsLFB ] - Attempting to connect & login to Reddit...")
 	try:
-		r = praw.Reddit(user_agent = userAgent)
 		r.login(username, password)
 		print("\tSuccessfully connected & logged in to Reddit!" + "\n")
 	except:
@@ -151,7 +160,7 @@ def main():
 							try:
 								postComment(c, text)
 							except:
-								print("\tCould not post comment! Check reddit.com for errors.")
+								print("\t\tCould not post comment! Check reddit.com for errors.")
 						else:
 							print("\tThe broken link has already been fixed! Skipping...")
 					else:
