@@ -115,8 +115,9 @@ def postComment(comment, text):
 			sub = char.replace(' r/', '')
 			r.get_subreddit(sub, fetch = True)
 		except:
+			sub = char.replace(' ', '')
 			print(
-				"\t\tThe broken link is not a valid subreddit!" + "\n"
+				"\t\tThe broken link, '" + sub + "', is not a valid subreddit!" + "\n"
 				"\t\tSkipping..." + "\n"
 				)
 			return
