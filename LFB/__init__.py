@@ -134,42 +134,46 @@ def postComment(comment, text):
 		)
 
 # This is the main function that searches for comments every 30 seconds. #
-def main():	
-	username = config['reddit']['username']
-	password = config['reddit']['password']
-	print("[ wsLFB ] - Attempting to connect & login to Reddit...")
+def main():
 	try:
-		r.login(username, password)
-		print("\tSuccessfully connected & logged in to Reddit!" + "\n")
-	except:
-		print("\tCould not connect to Reddit. Check reddit.com or your config for errors.")
-		sys.exit()
-	try:
-		while True:
-			print("[ wsLFB ] - Fetching new comments...")
-			comments = r.get_all_comments(limit = 500)
-			for c in comments:
-				botMet, text = checkComment(c)
-				if botMet:
-					if c.subreddit.display_name.lower() not in bannedSubs:
-						if c.id not in cache:
-							validComment = (
-								"\tFound valid comment in the subreddit '" + c.subreddit.display_name + "'!" + "\n"
-								"\tFixing broken link..."
-							)
-							print(validComment)
-							try:
-								postComment(c, text)
-							except:
-								print("\t\tCould not post comment! Check reddit.com for errors.")
+		username = config['reddit']['username']
+		password = config['reddit']['password']
+		print("[ wsLFB ] - Attempting to connect & login to Reddit...")
+		try:
+			r.login(username, password)
+			print("\tSuccessfully connected & logged in to Reddit!" + "\n")
+		except:
+			print("\tCould not connect to Reddit. Check reddit.com or your config for errors.")
+			sys.exit()
+		try:
+			while True:
+				print("[ wsLFB ] - Fetching new comments...")
+				comments = r.get_all_comments(limit = 500)
+				for c in comments:
+					botMet, text = checkComment(c)
+					if botMet:
+						if c.subreddit.display_name.lower() not in bannedSubs:
+							if c.id not in cache:
+								validComment = (
+									"\tFound valid comment in the subreddit '" + c.subreddit.display_name + "'!" + "\n"
+									"\tFixing broken link..."
+								)
+								print(validComment)
+								try:
+									postComment(c, text)
+								except:
+									print("\t\tCould not post comment! Check reddit.com for errors.")
+							else:
+								print("\tThe broken link has already been fixed! Skipping...")
 						else:
-							print("\tThe broken link has already been fixed! Skipping...")
-					else:
-						print(
-							"\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'!" + "\n"
-							"\tSkipping..." + "\n"
-							)
-			print("\tFinished checking comments! Sleeping for 30 seconds..." + "\n")
-			time.sleep(30)
-	except KeyboardInterrupt:
-		print("[ wsLFB ] - Stopped LinkFixerBotSnr!")
+							print(
+								"\tThe comment found is in the banned subreddit '" + c.subreddit.display_name + "'!" + "\n"
+								"\tSkipping..." + "\n"
+								)
+				print("\tFinished checking comments! Sleeping for 30 seconds..." + "\n")
+				time.sleep(30)
+		except KeyboardInterrupt:
+			print("[ wsLFB ] - Stopped LinkFixerBotSnr!")
+	except:
+		print("/tAn error occurred. Restarting...")
+		main()
